@@ -1,0 +1,9 @@
+[
+    {
+        "shapeName": "circle",
+        "radius": 15.5,
+        "x": 10,
+        "y": 20,
+        "stroke": "black"
+    }
+]
