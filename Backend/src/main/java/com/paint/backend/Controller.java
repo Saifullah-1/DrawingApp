@@ -44,8 +44,8 @@ public class Controller {
 
     @PostMapping(value = "/redo")
     @ResponseBody
-    public void redo() {
-        this.paint.redo();
+    public String redo() {
+        return this.paint.redo();
     }
 
     @GetMapping(value = "/load")

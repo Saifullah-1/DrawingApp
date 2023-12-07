@@ -1,7 +1,5 @@
 package com.paint.backend.shapes;
 
-import com.paint.backend.ShapeFactory;
-import org.json.JSONObject;
 
 public abstract class Shape implements IShape {
     protected String state;

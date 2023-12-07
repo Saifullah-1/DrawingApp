@@ -27,8 +27,8 @@ public class PaintApp {
         return this.serv.undo();
     }
 
-    public void redo() {
-        this.serv.redo();
+    public String redo() {
+        return this.serv.redo();
     }
 
     public void save(String fileType) {
