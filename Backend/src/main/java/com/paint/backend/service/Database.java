@@ -84,7 +84,9 @@ public class Database {
         Gson gson = gsonBuilder.create();
         if (!undoStack.isEmpty()) {
             redoStack.push(undoStack.pop());
-            shapesList = undoStack.peek();
+            if (!undoStack.isEmpty()) shapesList = undoStack.peek();
+            else shapesList.clear();
+            System.out.println("peek : " + redoStack.peek());
             test();
             return gson.toJson(shapesList);
         }
@@ -104,7 +106,7 @@ public class Database {
             return gson.toJson(shapesList);
         }
         test();
-        return "[]";
+        return gson.toJson(shapesList);
     }
 
     private void saveState() {
