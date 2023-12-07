@@ -1,9 +1,107 @@
 [
-    {
-        "shapeName": "circle",
-        "radius": 15.5,
-        "x": 10,
-        "y": 20,
-        "stroke": "black"
-    }
+  {
+    "radius": 50.15,
+    "state": "new",
+    "id": 2,
+    "shapeName": "circle",
+    "stroke": "red",
+    "fill": "blue",
+    "x": 100.0,
+    "y": 100.0,
+    "strokeWidth": 0.0,
+    "draggable": true
+  },
+  {
+    "points": [
+      15.0,
+      10.0,
+      20.0,
+      28.0
+    ],
+    "tension": 0.0,
+    "state": "new",
+    "id": 3,
+    "shapeName": "line",
+    "stroke": "red",
+    "x": 0.0,
+    "y": 0.0,
+    "strokeWidth": 0.0,
+    "draggable": true
+  },
+  {
+    "radiusX": 50.15,
+    "radiusY": 5.0,
+    "state": "new",
+    "id": 4,
+    "shapeName": "ellipse",
+    "stroke": "red",
+    "fill": "blue",
+    "x": 100.0,
+    "y": 100.0,
+    "strokeWidth": 0.0,
+    "draggable": true
+  },
+  {
+    "width": 10.0,
+    "state": "new",
+    "id": 5,
+    "shapeName": "square",
+    "stroke": "red",
+    "fill": "blue",
+    "x": 100.0,
+    "y": 100.0,
+    "strokeWidth": 0.0,
+    "draggable": true
+  },
+  {
+    "width": 10.0,
+    "height": 15.0,
+    "state": "new",
+    "id": 6,
+    "shapeName": "rect",
+    "stroke": "red",
+    "fill": "blue",
+    "x": 100.0,
+    "y": 100.0,
+    "strokeWidth": 0.0,
+    "draggable": true
+  },
+  {
+    "radius": 10.0,
+    "sides": 5,
+    "state": "new",
+    "id": 7,
+    "shapeName": "regularpolygon",
+    "stroke": "red",
+    "fill": "blue",
+    "x": 100.0,
+    "y": 100.0,
+    "strokeWidth": 0.0,
+    "draggable": true
+  },
+  {
+    "radius": 10.0,
+    "sides": 5,
+    "state": "new",
+    "id": 8,
+    "shapeName": "regularPolygon",
+    "stroke": "red",
+    "fill": "blue",
+    "x": 100.0,
+    "y": 100.0,
+    "strokeWidth": 0.0,
+    "draggable": true
+  },
+  {
+    "radius": 0.0,
+    "state": "updated",
+    "id": 1,
+    "shapeName": "triangle",
+    "stroke": "pink",
+    "fill": "blue",
+    "x": 100.0,
+    "y": 100.0,
+    "strokeWidth": 0.0,
+    "draggable": true
+  }
 ]

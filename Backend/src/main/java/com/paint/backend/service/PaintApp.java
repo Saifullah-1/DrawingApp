@@ -3,6 +3,8 @@ package com.paint.backend.service;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 public class PaintApp {
     private final Database serv;
@@ -36,7 +38,7 @@ public class PaintApp {
 
     }
 
-    public String load(String fileType) {
+    public String load(String fileType) throws IOException {
         this.serv.clear();
         if (fileType.equalsIgnoreCase("json"))
             return this.serv.loadJSON();

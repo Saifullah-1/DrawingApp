@@ -1,12 +1,9 @@
 package com.paint.backend.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.paint.backend.ShapeFactory;
 import com.paint.backend.shapes.IShape;
 import org.json.JSONArray;
@@ -44,7 +41,8 @@ public class Database {
         IShape shape = ShapeFactory.create(newShape);
         shapesList.add(shape);
         saveState();
-        test();
+//        convertData();
+//        test();
         return this.lastID;
     }
 
@@ -126,16 +124,28 @@ public class Database {
         }
     }
 
-    public JSONObject getData(){
-        return new JSONObject().put("lastID",lastID).put("shapes",this.shapesList);
-    }
+    public JSONObject convertData() {
+        JSONObject jsonObject = new JSONObject();
 
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setPrettyPrinting();
+        Gson gson = gsonBuilder.create();
+
+//        System.out.println("shapeslist : " + gson.toJson(this.shapesList));
+
+        jsonObject.put("lastID", lastID);
+        jsonObject.put("shapesList", gson.toJson(this.shapesList));
+//        System.out.println("obj : " + jsonObject.toString());
+        return jsonObject;
+    }
     public void saveXML() {
         File file = new File("save.xml");
         try {
             FileOutputStream fileStream = new FileOutputStream(file);
             XMLEncoder encoder = new XMLEncoder(fileStream);
-            encoder.writeObject(XML.toString(instance.getData(),"data"));
+//            System.out.println(instance.getData());
+            System.out.println(XML.toString(instance.convertData(),"paint"));
+            encoder.writeObject(XML.toString(instance.convertData(), "paint"));
             encoder.close();
             fileStream.flush();
             fileStream.close();
@@ -163,39 +173,33 @@ public class Database {
         return null;
     }
 
-    public String loadXML() {
+    public String loadXML() throws IOException {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setPrettyPrinting();
+        Gson gson = gsonBuilder.create();
+
         File file = new File("save.xml");
         try {
-            FileInputStream f2 = new FileInputStream(file.toPath().toString());
-            XMLDecoder mydecoder = new XMLDecoder(f2);
-            String result = (String) mydecoder.readObject();
-            mydecoder.close();
-            f2.close();
-            ObjectMapper objectMapper = new ObjectMapper();
+            FileInputStream fileInputStream = new FileInputStream(file.toPath().toString());
+            XMLDecoder xmlDecoder = new XMLDecoder(fileInputStream);
+            String data = (String) xmlDecoder.readObject();
+            xmlDecoder.close();
+            fileInputStream.close();
 
-            // Read JSON string as a JsonNode
-            JsonNode jsonNode = objectMapper.readTree(XML.toJSONObject(result).toString());
-
-            // Access specific fields or process the entire JSON structure as needed
-            JsonNode shapesNode = jsonNode.path("data").path("shapes");
-            JsonNode lastIDNode = jsonNode.path("data").path("lastID");
-
-            lastID = lastIDNode.asInt();
-            JSONArray jsonArray = new JSONArray(shapesNode.asText());
-            JSONArray arr = startXML(jsonArray);
-//            GsonBuilder gsonBuilder = new GsonBuilder();
-//            gsonBuilder.setPrettyPrinting();
-//            Gson gson = gsonBuilder.create();
-//            JSONObject jsonObject = jsonArray.toJSONObject(jsonArray);
+            JSONObject jsonObject = XML.toJSONObject(data);
 //            System.out.println(jsonObject.toString());
-//            JSONArray jsonArray1 = (JSONArray) jsonObject.get("myArrayList");
-//            System.out.println(jsonArray1.toString());
-//            JSONObject jsonObject1 = new JSONObject(jsonArray1.toString());
+//            System.out.println(jsonObject.get("paint").toString());
+            JSONObject jsonObject1 = new JSONObject(jsonObject.get("paint").toString());
 //            System.out.println(jsonObject1.toString());
-//            start(jsonArray1.toString());
+//            System.out.println(jsonObject1.get("shapesList").toString());
+            JSONArray jsonArray = new JSONArray(jsonObject1.get("shapesList").toString());
+//            System.out.println(jsonArray.toString());
+            this.lastID = jsonObject1.getInt("lastID");
+//            System.out.println("ID: " + this.lastID);
+//            System.out.println("Shapes : " + gson.toJson(jsonArray));
+            startXML(jsonArray);
 
-//            return gson.toJson(shapesNode.asText());
-            return arr.toString();
+            return jsonArray.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -220,16 +224,13 @@ public class Database {
         undoStack.push(shapesList);
     }
 
-    JSONArray startXML(JSONArray jsonArray) {
-        JSONArray arr = new JSONArray();
+    void startXML(JSONArray jsonArray) {
+        System.out.println(jsonArray.toString());
         for (Object jsonObject : jsonArray) {
-            String str = (String) new JSONObject(jsonObject.toString()).get("attrs");
-            IShape shape = ShapeFactory.create(new JSONObject(str));
-            arr.put(new JSONObject(jsonObject.toString()).get("attrs"));
+            IShape shape = ShapeFactory.create(new JSONObject(jsonObject.toString()));
             this.shapesList.add(shape);
             this.lastID = shape.getID();
         }
-        return arr;
     }
     public void test() {
         GsonBuilder gsonBuilder = new GsonBuilder();
