@@ -198,6 +198,7 @@ public class Database {
 //            System.out.println(jsonObject1.get("shapesList").toString());
             JSONArray jsonArray = new JSONArray(jsonObject1.get("shapesList").toString());
 //            System.out.println(jsonArray.toString());
+            clear();
             this.lastID = jsonObject1.getInt("lastID");
 //            System.out.println("ID: " + this.lastID);
 //            System.out.println("Shapes : " + gson.toJson(jsonArray));
@@ -222,16 +223,17 @@ public class Database {
         clear();
         JSONArray jsonArray = new JSONArray(jsonStr);
         for (Object jsonObject : jsonArray) {
+            int temp;
             IShape shape = ShapeFactory.create(new JSONObject(jsonObject.toString()));
             this.shapesList.add(shape);
-            this.lastID = shape.getID();
+            temp = this.lastID;
+            this.lastID = Math.max(shape.getID(), temp);
         }
         undoStack.push(shapesList);
     }
 
     void startXML(JSONArray jsonArray) {
 //        System.out.println(jsonArray.toString());
-        clear();
         for (Object jsonObject : jsonArray) {
             IShape shape = ShapeFactory.create(new JSONObject(jsonObject.toString()));
             this.shapesList.add(shape);
