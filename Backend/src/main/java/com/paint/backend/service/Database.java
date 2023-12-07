@@ -42,7 +42,7 @@ public class Database {
         shapesList.add(shape);
         saveState();
 //        convertData();
-//        test();
+        test();
         return this.lastID;
     }
 
@@ -62,7 +62,7 @@ public class Database {
         IShape updatedShape = ShapeFactory.create(updated);
         shapesList.add(updatedShape);
         saveState();
-//        test();  //Testing
+        test();  //Testing
         return updated.toString();
     }
 
@@ -74,7 +74,7 @@ public class Database {
             }
         }
         saveState();
-//        test();
+        test();
     }
 
     /*                                   UNDO & REDO                                   */
@@ -82,11 +82,12 @@ public class Database {
         if (!undoStack.isEmpty()) {
             redoStack.push(undoStack.pop());
             shapesList = undoStack.peek();
-//            test();
+            test();
+            return new JSONObject(shapesList).toString();
         }
         shapesList.clear();
-//        test();
-        return new JSONObject(shapesList).toString();
+        test();
+        return "[]";
     }
 
     public String redo() {
@@ -95,10 +96,11 @@ public class Database {
             shapesList = undoStack.peek();
             IShape shape = null;
             if (!shapesList.isEmpty()) shape = shapesList.get(shapesList.size() - 1);
-//            test();
+            test();
+            return new JSONObject(shapesList).toString();
         }
-//        test();
-        return new JSONObject(shapesList).toString();
+        test();
+        return "[]";
     }
 
     private void saveState() {
