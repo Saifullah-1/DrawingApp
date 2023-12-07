@@ -83,10 +83,12 @@ public class Database {
         gsonBuilder.setPrettyPrinting();
         Gson gson = gsonBuilder.create();
         if (!undoStack.isEmpty()) {
-            redoStack.push(undoStack.pop());
-            if (!undoStack.isEmpty()) shapesList = undoStack.peek();
-            else shapesList.clear();
+            System.out.println("peek : " + undoStack.peek());
+            redoStack.push(new ArrayList<>(shapesList));
+            undoStack.pop();
             System.out.println("peek : " + redoStack.peek());
+            if (!undoStack.isEmpty()) shapesList = new ArrayList<>(undoStack.peek());
+            else shapesList.clear();
             test();
             return gson.toJson(shapesList);
         }
@@ -100,8 +102,11 @@ public class Database {
         gsonBuilder.setPrettyPrinting();
         Gson gson = gsonBuilder.create();
         if (!redoStack.isEmpty()) {
-            undoStack.push(redoStack.pop());
-            shapesList = undoStack.peek();
+            System.out.println("peek : " + redoStack.peek());
+            undoStack.push(new ArrayList<>(redoStack.peek()));
+            redoStack.pop();
+            System.out.println("peek : " + undoStack.peek());
+            shapesList = new ArrayList<>(undoStack.peek());
             test();
             return gson.toJson(shapesList);
         }
