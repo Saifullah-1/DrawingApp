@@ -1,5 +1,6 @@
 package com.paint.backend.shapes;
 
+import com.paint.backend.ShapeFactory;
 import org.json.JSONObject;
 
 public class Circle extends Shape {
@@ -19,5 +20,14 @@ public class Circle extends Shape {
         json.put("strokeWidth", strokeWidth);
         json.put("draggable", draggable);
         return json.put("shapeName", shapeName);
+    }
+
+    @Override
+    public IShape update(JSONObject updatesData) {
+        JSONObject updated = this.draw();
+        for (String key : JSONObject.getNames(updatesData))
+            updated.put(key, updatesData.get(key));
+        updated.put("state", "updated");
+        return ShapeFactory.create(updated);
     }
 }

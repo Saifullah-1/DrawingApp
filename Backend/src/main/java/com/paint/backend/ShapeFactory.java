@@ -25,7 +25,7 @@ public class ShapeFactory {
             shape = gson.fromJson(newShape.toString(), Circle.class);
         } else if (shapeType.equalsIgnoreCase("regularpolygon")) {
             shape = gson.fromJson(newShape.toString(), RegularPolygon.class);
-        } else if (shapeType.equalsIgnoreCase("rect")) {
+        } else if (shapeType.equalsIgnoreCase("rectangle")) {
             shape = gson.fromJson(newShape.toString(), Rect.class);
         } else if (shapeType.equalsIgnoreCase("ellipse")) {
             shape = gson.fromJson(newShape.toString(), Ellipse.class);
@@ -37,6 +37,8 @@ public class ShapeFactory {
             shape = gson.fromJson(newShape.toString(), Square.class);
         } else if (shapeType.equalsIgnoreCase("triangle")) {
             shape = gson.fromJson(newShape.toString(), Triangle.class);
+        } else if (shapeType.equalsIgnoreCase("container")) {
+            shape = gson.fromJson(newShape.toString(), Container.class);
         }
         return shape;
     }

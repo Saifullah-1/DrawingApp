@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.paint.backend.ShapeFactory;
+import com.paint.backend.shapes.Container;
 import com.paint.backend.shapes.IShape;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,7 +25,6 @@ public class Database {
     private List<IShape> shapesList = new ArrayList<>();
     private final Stack<List<IShape>> undoStack = new Stack<>();
     private final Stack<List<IShape>> redoStack = new Stack<>();
-
     private Database() {}
 
     public static Database getInstance() {
@@ -36,6 +36,8 @@ public class Database {
 
     public ArrayList<IShape> getShapes() {return new ArrayList<>(this.shapesList); }
     public int create(JSONObject newShape) {
+        if (lastID == 0)
+            clear();
         newShape.put("id", ++lastID);
         newShape.put("state", "new");
         IShape shape = ShapeFactory.create(newShape);
@@ -57,9 +59,7 @@ public class Database {
         }
         JSONObject data = new JSONObject(newData);
         JSONObject updated = shape.draw();
-        for(String key : JSONObject.getNames(data)) updated.put(key, data.get(key));
-        updated.put("state", "updated");
-        IShape updatedShape = ShapeFactory.create(updated);
+        IShape updatedShape = shape.update(updated);
         shapesList.add(updatedShape);
         saveState();
         test();  //Testing
@@ -67,6 +67,9 @@ public class Database {
     }
 
     public void delete(int id) {
+        if(id == 0)
+            return;
+
         for (IShape shape : this.shapesList) {
             if (shape.getID() == id) {
                 this.shapesList.remove(shape);
@@ -82,7 +85,7 @@ public class Database {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
         Gson gson = gsonBuilder.create();
-        if (!undoStack.isEmpty()) {
+        if (undoStack.size() > 1) {
             System.out.println("peek : " + undoStack.peek());
             redoStack.push(new ArrayList<>(shapesList));
             undoStack.pop();
@@ -92,9 +95,8 @@ public class Database {
             test();
             return gson.toJson(shapesList);
         }
-        shapesList.clear();
         test();
-        return "[]";
+        return gson.toJson(shapesList);
     }
 
     public String redo() {
@@ -163,9 +165,7 @@ public class Database {
 
     public String loadJSON() {
         try {
-            // Create ObjectMapper instance
             ObjectMapper objectMapper = new ObjectMapper();
-            // Read JSON array and map it to a list of objects
             List<Object> myObjectList = objectMapper.readValue(new File("save.json"), new TypeReference<List<Object>>() {});
 
             GsonBuilder gsonBuilder = new GsonBuilder();
@@ -215,6 +215,14 @@ public class Database {
         this.undoStack.clear();
         this.redoStack.clear();
         this.lastID = 0;
+
+        JSONObject obj = new JSONObject();
+        obj.put("id", 0);
+        obj.put("shapeName", "container");
+        obj.put("fill", "white");
+        IShape container = ShapeFactory.create(obj);
+        this.shapesList.add(container);
+        saveState();
     }
 
     /*                                             UPLOADING DATA                                             */

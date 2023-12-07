@@ -1,5 +1,6 @@
 package com.paint.backend.shapes;
 
+import com.paint.backend.ShapeFactory;
 import org.json.JSONObject;
 public class Triangle extends Shape{
     private static int sides = 3;
@@ -22,12 +23,12 @@ public class Triangle extends Shape{
         return json.put("shapeName", shapeName);
     }
 
-//    @Override
-//    public IShape update(JSONObject updated) {
-//        JSONObject json = this.draw();
-//        for (Object obj : json.names()) {
-//            json.put()
-//        }
-//        return ShapeFactory.create(updated);
-//    }
+    @Override
+    public IShape update(JSONObject updatesData) {
+        JSONObject updated = this.draw();
+        for (String key : JSONObject.getNames(updatesData))
+            updated.put(key, updatesData.get(key));
+        updated.put("state", "updated");
+        return ShapeFactory.create(updated);
+    }
 }

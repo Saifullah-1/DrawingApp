@@ -5,7 +5,7 @@ import org.json.JSONObject;
 public interface IShape {
     JSONObject draw();
 
-//    IShape update(JSONObject updated);
+    IShape update(JSONObject updated);
 
     int getID();
 }
