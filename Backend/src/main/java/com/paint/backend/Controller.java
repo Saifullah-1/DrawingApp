@@ -48,13 +48,7 @@ public class Controller {
         this.paint.redo();
     }
 
-//    @PostMapping(value = "/save")
-//    public String save(@RequestParam String fileType) {
-//        System.out.println(fileType);
-//        return this.paint.save(fileType);
-//    }
-
-    @GetMapping("/load")
+    @GetMapping(value = "/load")
     @ResponseBody
     public String load(@RequestParam String fileType) {
         try {

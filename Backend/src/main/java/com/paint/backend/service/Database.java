@@ -88,8 +88,8 @@ public class Database {
             return new JSONObject(shape).toString();
         }
         shapesList.clear();
-        test();
-        return "[]";
+//        test();
+        return "{}";
     }
 
     public String redo() {
@@ -130,9 +130,7 @@ public class Database {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
         Gson gson = gsonBuilder.create();
-
 //        System.out.println("shapeslist : " + gson.toJson(this.shapesList));
-
         jsonObject.put("lastID", lastID);
         jsonObject.put("shapesList", gson.toJson(this.shapesList));
 //        System.out.println("obj : " + jsonObject.toString());
@@ -150,7 +148,7 @@ public class Database {
             fileStream.flush();
             fileStream.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -164,8 +162,9 @@ public class Database {
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.setPrettyPrinting();
             Gson gson = gsonBuilder.create();
+
             String jsonStr = gson.toJson(myObjectList);
-            start(jsonStr);
+            startJSON(jsonStr);
             return jsonStr;
         } catch (IOException e) {
             e.printStackTrace();
@@ -174,10 +173,6 @@ public class Database {
     }
 
     public String loadXML() throws IOException {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setPrettyPrinting();
-        Gson gson = gsonBuilder.create();
-
         File file = new File("save.xml");
         try {
             FileInputStream fileInputStream = new FileInputStream(file.toPath().toString());
@@ -198,7 +193,6 @@ public class Database {
 //            System.out.println("ID: " + this.lastID);
 //            System.out.println("Shapes : " + gson.toJson(jsonArray));
             startXML(jsonArray);
-
             return jsonArray.toString();
         } catch (IOException e) {
             e.printStackTrace();
@@ -213,8 +207,10 @@ public class Database {
         this.lastID = 0;
     }
 
-    void start(String jsonStr) {
-        System.out.println(jsonStr);
+    /*                                             UPLOADING DATA                                             */
+    void startJSON(String jsonStr) {
+//        System.out.println(jsonStr);
+        clear();
         JSONArray jsonArray = new JSONArray(jsonStr);
         for (Object jsonObject : jsonArray) {
             IShape shape = ShapeFactory.create(new JSONObject(jsonObject.toString()));
@@ -225,13 +221,16 @@ public class Database {
     }
 
     void startXML(JSONArray jsonArray) {
-        System.out.println(jsonArray.toString());
+//        System.out.println(jsonArray.toString());
+        clear();
         for (Object jsonObject : jsonArray) {
             IShape shape = ShapeFactory.create(new JSONObject(jsonObject.toString()));
             this.shapesList.add(shape);
-            this.lastID = shape.getID();
         }
+        undoStack.push(shapesList);
     }
+
+    /*                                             TEST                                             */
     public void test() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
