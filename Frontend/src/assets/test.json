@@ -1,0 +1,15 @@
+{
+
+            "id": 0,
+        "shapeName": "circle",
+        "x": 100,
+        "y": 100,
+        "radius": 50.15,
+        "fill": "blue",
+        "stroke": "red",
+        "strockWidth": 5.5,
+        "Draggable": true,
+        "scaleX": 1.5,
+        "scaleY": 1 
+
+}

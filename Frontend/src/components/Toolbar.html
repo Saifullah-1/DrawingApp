@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Paint</title>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+    <body>
+        <div id="file-bar">
+            <div class="dropdown">
+                <button class="file-btn">File</button>
+                <div class="dropdown-content">
+                    <button id="new-file"><img src=".\Pics\new-file-svgrepo-com.svg" style="vertical-align:middle">  New</button>
+                    <button id="open-file"><img src=".\Pics\open-folder-svgrepo-com.svg" style="vertical-align:middle">  Open</button>
+                    <button id="save-file-dropdown"><img src=".\Pics\save-svgrepo-com.svg" style="vertical-align:middle">  Save</button>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="file-btn">Edit</button>
+                <div class="dropdown-content">
+                    <button id="cut-file"><img src=".\Pics\cut-svgrepo-com.svg" style="vertical-align:middle">  Cut</button>
+                    <button id="copy-file"><img src=".\Pics\copy-document-svgrepo-com.svg" style="vertical-align:middle">  Copy</button>
+                    <button id="paste-file"><img src=".\Pics\paste-svgrepo-com.svg" style="vertical-align:middle">  Paste</button>
+                </div>
+            </div>
+            <div class="vertical-line">|</div>
+            <button id="save-file" style="text-align: center;"><img src=".\Pics\save-svgrepo-com.svg" style="vertical-align:middle"></button>
+            <div class="vertical-line">|</div>
+            <button id="undo" style="text-align: center;"><img src=".\Pics\undo-left-svgrepo-com.svg" style="vertical-align:middle"></button>
+            <button id="redo" style="text-align: center;"><img src=".\Pics\undo-right-svgrepo-com.svg" style="vertical-align:middle"></button>
+        </div>
+        <div id="tools-bar" style="text-align: left;">
+            <div id="tools" style="text-align: center;">
+                <button id="eraser"><img src=".\Pics\eraser-3-svgrepo-com.svg"></button>
+                <button id="pencil"><img src=".\Pics\pencil-svgrepo-com.svg"></button>
+                <button id="fill"><img src=".\Pics\fill-svgrepo-com.svg"></button>
+                <button id="color-picker"><img src=".\Pics\color-picker-dropper-colour-svgrepo-com.svg"></button>
+                Tools
+            </div>
+            <div id="shapes" style="text-align: center;">
+                <button id="line-segment"><img src=".\Pics\line-segment-svgrepo-com.svg"></button>
+                <button id="circle"><img src=".\Pics\circle-svgrepo-com.svg"></button>
+                <button id="ellipse"><img src=".\Pics\ellipse-figure-form-geometry-graphic-line-svgrepo-com.svg"></button>
+                <button id="triangle"><img src=".\Pics\triangle-svgrepo-com.svg"></button>
+                <button id="rectangle"><img src=".\Pics\rectangle-svgrepo-com.svg"></button>
+                <button id="square"><img src=".\Pics\square-svgrepo-com.svg"></button>
+                Shapes
+            </div>
+            <div id="colors" style="text-align: center;">
+                <button id="basic-color"></button>
+                <button id="basic-color"></button>
+                <button id="basic-color"></button>
+                <button id="basic-color"></button>
+                <button id="basic-color"></button>
+                <button id="basic-color"></button>
+                <button id="basic-color"></button>
+                <button id="basic-color"></button>
+                <button id="basic-color"></button>
+                <button id="basic-color"></button>
+                <button id="basic-color"></button>
+                <button id="basic-color"></button>
+                <button id="empty-color"></button>
+                <button id="empty-color"></button>
+                <button id="empty-color"></button>
+                <button id="empty-color"></button>
+                <input type="color" id="gradient" value="#000000"><br>
+                Colors
+            </div>
+        </div>
+    </body>
+</html>

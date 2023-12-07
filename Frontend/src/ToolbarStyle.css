@@ -1,0 +1,238 @@
+/*File bar*/
+#file-bar{
+    height: 40px;
+    width: 100%;
+    background-color: azure;
+}
+
+.dropdown-content{
+    display: none;
+    position: absolute;
+    background-color:azure;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-content button{
+    height: 40px;
+    width: 100px;
+    border: none;
+    background-color: azure;
+    text-align: left;
+}
+
+.dropdown{
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown:hover .dropdown-content{
+    display: block;
+}
+
+.dropdown:hover .file-btn{
+    background-color: rgb(206, 249, 249);
+}
+
+.dropdown-content button:hover{
+    background-color: rgb(206, 249, 249);
+}
+
+.file-btn{
+    background-color: azure;
+    height: 40px;
+    width: 50px;
+    border: none;
+    font-size: 17px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.vertical-line{
+    position: relative;
+    display: inline-block;
+    background-color: azure;
+    height: 20px;
+    width: 10px;
+    border: none;
+    font-size: 25px;
+    font-weight: 500;
+    -webkit-text-fill-color: rgb(225, 225, 225);
+    text-align: center;
+}
+
+#save-file{
+    height: 35px;
+    width: 40px;
+    border: none;
+    background-color: azure;
+    text-align: left;
+}
+
+#save-file:hover{
+    border-radius: 5px;
+    border: 2px solid ;
+    background-color: rgb(206, 249, 249);
+}
+
+#undo{
+    height: 35px;
+    width: 40px;
+    border: none;
+    background-color: azure;
+    text-align: left;
+}
+
+#undo:hover{
+    border-radius: 5px;
+    border: 2px solid ;
+    background-color: rgb(206, 249, 249);
+}
+
+#redo{
+    height: 35px;
+    width: 40px;
+    border: none;
+    background-color: azure;
+    text-align: left;
+}
+
+#redo:hover{
+    border-radius: 5px;
+    border: 2px solid ;
+    background-color: rgb(206, 249, 249);
+}
+
+/*tools bar*/
+#tools-bar{
+    height: 100px;
+    width: 100%;
+    background-color: azure;
+}
+
+#tools{
+    display: inline-block;
+    height: 100px;
+    width: 120px;
+    border-right: 2px solid rgb(225, 225, 225);
+}
+
+#tools button{
+    background-color: azure;
+    height: 35px;
+    width: 35px;
+    margin-left: 7px;
+    border: 2px solid azure;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+#tools button:hover{
+    border-radius: 5px;
+    border: 2px solid black;
+    background-color: rgb(206, 249, 249);
+}
+
+#shapes{
+    display: inline-block;
+    vertical-align: top;
+    height: 100px;
+    width: 150px;
+    border-right: 2px solid rgb(225, 225, 225);
+}
+
+#shapes button{
+    background-color: azure;
+    height: 35px;
+    width: 35px;
+    margin-left: 7px;
+    border: 2px solid azure;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+#shapes button:hover{
+    border-radius: 5px;
+    border: 2px solid black;
+    background-color: rgb(206, 249, 249);
+}
+
+#colors{
+    display: inline-block;
+    vertical-align: top;
+    height: 100px;
+    width: 250px;
+    border-right: 2px solid rgb(225, 225, 225);
+}
+
+#colors button{
+    margin-top: 2px;
+    height: 19px;
+    width: 19px;
+    margin-left: 7px;
+    border-radius: 50%;
+    border: 1px solid rgb(88, 88, 88);
+}
+
+#empty-color{
+    background-color: white;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    border: 1px solid rgb(88, 88, 88);
+    
+}
+
+#gradient{
+    width: 50px;
+    height: 28px;
+    background-color: azure;
+    border: none;
+}
+
+#colors button:nth-child(1){
+    background-color: white;
+}
+
+#colors button:nth-child(2){
+    background-color: red;
+}
+
+#colors button:nth-child(3){
+    background-color: yellow;
+}
+
+#colors button:nth-child(4){
+    background-color: green;
+}
+
+#colors button:nth-child(5){
+    background-color: blue;
+}
+
+#colors button:nth-child(6){
+    background-color: blueviolet;
+}
+
+#colors button:nth-child(7){
+    background-color: black;
+}
+
+#colors button:nth-child(8){
+    background-color: gray;
+}
+
+#colors button:nth-child(9){
+    background-color: brown;
+}
+
+#colors button:nth-child(10){
+    background-color: lightgreen;
+}
+
+#colors button:nth-child(11){
+    background-color: lightskyblue;
+}
+
+#colors button:nth-child(12){
+    background-color: pink;
+}
