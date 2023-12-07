@@ -79,11 +79,14 @@ public class Database {
 
     /*                                   UNDO & REDO                                   */
     public String undo() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setPrettyPrinting();
+        Gson gson = gsonBuilder.create();
         if (!undoStack.isEmpty()) {
             redoStack.push(undoStack.pop());
             shapesList = undoStack.peek();
             test();
-            return new JSONObject(shapesList).toString();
+            return gson.toJson(shapesList);
         }
         shapesList.clear();
         test();
@@ -91,13 +94,14 @@ public class Database {
     }
 
     public String redo() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setPrettyPrinting();
+        Gson gson = gsonBuilder.create();
         if (!redoStack.isEmpty()) {
             undoStack.push(redoStack.pop());
             shapesList = undoStack.peek();
-            IShape shape = null;
-            if (!shapesList.isEmpty()) shape = shapesList.get(shapesList.size() - 1);
             test();
-            return new JSONObject(shapesList).toString();
+            return gson.toJson(shapesList);
         }
         test();
         return "[]";
