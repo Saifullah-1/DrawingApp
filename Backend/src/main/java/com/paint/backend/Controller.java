@@ -31,12 +31,12 @@ public class Controller {
         return this.paint.update(id, newData);
     }
 
-    @GetMapping(value = "/delete")
+    @PostMapping(value = "/delete")
     public void delete(@RequestParam int id) {
         this.paint.delete(id);
     }
 
-    @PostMapping(value = "/undo")
+    @GetMapping(value = "/undo")
     @ResponseBody
     public String undo() {
         return this.paint.undo();
