@@ -57,13 +57,12 @@ public class Database {
                 break;
             }
         }
-        JSONObject data = new JSONObject(newData);
         JSONObject updated = shape.draw();
-        IShape updatedShape = shape.update(updated);
+        IShape updatedShape = shape.update(new JSONObject(newData));
         shapesList.add(updatedShape);
         saveState();
         test();  //Testing
-        return updated.toString();
+        return updatedShape.draw().toString();
     }
 
     public void delete(int id) {
