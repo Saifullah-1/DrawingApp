@@ -63,4 +63,9 @@ public class Controller {
         System.out.println("Yes");
         this.paint.save(fileType);
     }
+
+    @GetMapping(value = "/new")
+    public void start() {
+        this.paint.clear();
+    }
 }
