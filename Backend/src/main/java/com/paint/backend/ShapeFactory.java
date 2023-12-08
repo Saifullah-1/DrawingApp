@@ -29,7 +29,7 @@ public class ShapeFactory {
             shape = gson.fromJson(newShape.toString(), Rect.class);
         } else if (shapeType.equalsIgnoreCase("ellipse")) {
             shape = gson.fromJson(newShape.toString(), Ellipse.class);
-        } else if (shapeType.equalsIgnoreCase("line")) {
+        } else if (shapeType.equalsIgnoreCase("line") || shapeType.equalsIgnoreCase("pencil")) {
             shape = gson.fromJson(newShape.toString(), Line.class);
         } else if (shapeType.equalsIgnoreCase("star")) {
             shape = gson.fromJson(newShape.toString(), Star.class);

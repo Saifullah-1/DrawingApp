@@ -42,7 +42,7 @@ public class Controller {
         return this.paint.undo();
     }
 
-    @PostMapping(value = "/redo")
+    @GetMapping(value = "/redo")
     @ResponseBody
     public String redo() {
         return this.paint.redo();
