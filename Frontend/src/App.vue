@@ -8,6 +8,11 @@
 import Canvas from './components/Canvas.vue';
 import ToolBar from './components/ToolBar.vue';
 
+
+window.addEventListener('load', (event) => {
+    fetch("http://localhost:8080/paint/new");
+});
+
 export default {
   name: 'App',
   components: {

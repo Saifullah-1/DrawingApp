@@ -340,6 +340,7 @@
             else if (item=='picker') bool=this.clickedPicker
             else if (item=='select') bool=this.clickedSelect
             else if (item=='resize') bool=this.clickedResize
+            else if (item=='new') fetch("http://localhost:8080/paint/new")
             if (shape !='NO'){
                 if (shape=='circle'&&this.$refs.circle.className != 'hovered') hover=false  
                 else if (shape=='rectangle'&&this.$refs.rectangle.className != 'hovered') hover=false  
