@@ -89,8 +89,8 @@ public class Database {
             redoStack.push(new ArrayList<>(shapesList));
             undoStack.pop();
             System.out.println("peek : " + redoStack.peek());
-//            if (!undoStack.isEmpty()) shapesList = new ArrayList<>(undoStack.peek());
-//            else shapesList.clear();
+            System.out.println("peek : " + undoStack.peek());
+            shapesList = new ArrayList<>(undoStack.peek());
             test();
             return gson.toJson(shapesList);
         }
@@ -177,7 +177,7 @@ public class Database {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return "[]";
     }
 
     public String loadXML() throws IOException {
@@ -206,7 +206,7 @@ public class Database {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return "[]";
     }
 
     public void clear() {
@@ -214,7 +214,7 @@ public class Database {
         this.undoStack.clear();
         this.redoStack.clear();
         this.lastID = -1;
-        createContainer();
+//        createContainer();
     }
 
     public void createContainer() {
