@@ -4,12 +4,15 @@
             <button class="file-btn">File</button>
             <div class="dropdown-content">
                 <button id="new-file" @click="tools('new')" ><img src="..\assets\pics\new-file-svgrepo-com.svg" style="vertical-align:middle">  New</button>
-                <button for="myfile" id="open-file" @click="tools('load')"><img src="..\assets\pics\open-folder-svgrepo-com.svg" style="vertical-align:middle"> 
-                    <!-- @click="OpenFile" -->
-                    Open
+                <button for="myfile" id="open-file" @click="OpenFile('xml')"><img src="..\assets\pics\open-folder-svgrepo-com.svg" style="vertical-align:middle"> 
+                    Open XML
                 </button>
-                <!-- @click="SaveFile('xml')" -->
-                <button id="save-file-dropdown" @click="tools('save')"><img src="..\assets\pics\save-svgrepo-com.svg" style="vertical-align:middle"> Save XML </button>
+                <button for="myfile" id="open-file" @click="OpenFile('json')"><img src="..\assets\pics\open-folder-svgrepo-com.svg" style="vertical-align:middle"> 
+                    <!-- <label for="myfile">Open</label> -->
+                    <!-- <input type="file" name="myfile" id="myfile" style="opacity: .0001;"> -->
+                    Open Json
+                </button>
+                <button id="save-file-dropdown" @click="SaveFile('xml')"><img src="..\assets\pics\save-svgrepo-com.svg" style="vertical-align:middle"> Save XML </button>
                 <button id="save-file-dropdown" @click="SaveFile('json')"><img src="..\assets\pics\save-svgrepo-com.svg" style="vertical-align:middle"> Save Json</button>
             </div>
         </div>
@@ -25,8 +28,8 @@
         
         <!-- <button id="save-file" style="text-align: center;"><img src="..\assets\pics\save-svgrepo-com.svg" style="vertical-align:middle"></button> -->
         <div class="vertical-line">|</div>
-        <button id="undo" style="text-align: center;"><img src="..\assets\pics\undo-left-svgrepo-com.svg" style="vertical-align:middle"></button>
-        <button id="redo" style="text-align: center;"><img src="..\assets\pics\undo-right-svgrepo-com.svg" style="vertical-align:middle"></button>
+        <button id="undo" @click = "tools('undo')" style="text-align: center; "><img src="..\assets\pics\undo-left-svgrepo-com.svg" style="vertical-align:middle"></button>
+        <button id="redo" @click = "tools('redo')" style="text-align: center; "><img src="..\assets\pics\undo-right-svgrepo-com.svg" style="vertical-align:middle"></button>
     </div>
     <div id="tools-bar" style="text-align: left;">
         <div id="tools" style="text-align: center;">
@@ -60,10 +63,10 @@
             <button id="basic-color" @click = "setcolor('#90EE90')"></button>
             <button id="basic-color" @click = "setcolor('#87CEFA')"></button>
             <button id="basic-color" @click = "setcolor('#FFC0CB')"></button>
-            <button id="empty-color" ref="pos1" @click="newColor('set',0)" ></button>
-            <button id="empty-color" ref="pos2" @click="newColor('set',1)" ></button>
-            <button id="empty-color" ref="pos3" @click="newColor('set',2)"></button>
-            <button id="empty-color" ref="pos4" @click="newColor('set',3)"></button>
+            <button id="empty-color" ref="pos1" style="background-color:white;" @click="newColor('set',0)" ></button>
+            <button id="empty-color" ref="pos2" style="background-color:white;" @click="newColor('set',1)" ></button>
+            <button id="empty-color" ref="pos3" style="background-color:white;" @click="newColor('set',2)"></button>
+            <button id="empty-color" ref="pos4" style="background-color:white;" @click="newColor('set',3)"></button>
             <input type="color" ref="palette" id="gradient" value="#000000" @change="PaletteSetcolor"> <br>
             Colors
         </div>
@@ -76,7 +79,6 @@
     
     <script>
     import axios from 'axios'
-import Konva from 'konva';
     export default {
     data(){
         return{
@@ -94,6 +96,7 @@ import Konva from 'konva';
             canRedo : false,
             File:null,
             loaded : [],
+            //type: ''
         }
     },
     props(){
@@ -101,24 +104,17 @@ import Konva from 'konva';
     methods :{
     
         async SaveFile(type){
-            // let fileHandle = await window.showSaveFilePicker()
-            // const dirHandle = await window.showDirectoryPicker()
-            // this.Save()
-            // this.File = await fileHandle.getFile()
-            // console.log(this.File)
-            // console.log(dirHandle)
-            // console.log(fileHandle)
-            this.data = await axios.get("http://localhost:8080/paint/save?fileType=json");
+           // this.type = typ
+            this.data = await axios.get("http://localhost:8080/paint/save?fileType="+type);
         },
 
         async Save(){
-            
             // let stream = await fileHandle.createWritable()
             // await stream.write('ggggggg')
             // await stream.close()
         },
 
-        async OpenFile(){
+        async OpenFile(type){
         //     await window.showOpenFilePicker({types:[
         //         {
         //             description : 'Paint',
@@ -132,11 +128,30 @@ import Konva from 'konva';
         // })
         //     this.File = await FileSystemHandle.getFile()
         //     // this.File = await FileHandle .getFile()
-            this.data = await axios.get("http://localhost:8080/paint/load&type=jsob");
-            this.loaded = []
-            this.loaded=this.data.parse()
-            this.emitter.emit("load",{msg: this.loaded})
+            // const response = fetch("http://localhost:3000/shapes")
+            // // this.data = await axios.get("http://localhost:8080/paint/load?fileType=json");
+            // this.data = await response.json();
+            // console.log(JSON.stringify(this.data))
+            // // this.loaded = []
+            // // this.loaded=this.data.parse()
+            // // this.emitter.emit("load",{msg: this.loaded})
+
+            // const response = await fetch("http://localhost:3000/shapes");
+            // this.data = JSON.stringify(response);
+            const response = await axios.get("http://localhost:8080/paint/load?fileType="+type)
+            let obj = response.data
+                // for (var i=0;i<data.length;i++){
+                    // console.log (data[i])
+            this.emitter.emit("load",{msg: obj})
+                // }
             
+
+            // console.log ("Length Before Send = " ,this.loaded.length )
+            // for (var i=0;i<this.loaded.length;i++){
+            //     console.log(this.loaded[i].id)
+            //     this.emitter.emit("load",{msg: this.loaded[i]})
+            // }
+            // this.emitter.emit("load",{msg: this.loaded})
         },
 
         unclick(){
@@ -248,7 +263,7 @@ import Konva from 'konva';
             this.emitter.emit("color-clicked",{msg: this.color})
         },
     
-        newColor (order,ind,color){
+        newColor (order,ind,color='white'){
             ind = ind%4
             if (order=='add'){
                 if (ind==0) this.$refs.pos1.style.backgroundColor=color
@@ -261,7 +276,11 @@ import Konva from 'konva';
                 else if (ind==1) color=this.$refs.pos2.style.backgroundColor
                 else if (ind==2) color=this.$refs.pos3.style.backgroundColor
                 else if (ind==3) color=this.$refs.pos4.style.backgroundColor
-                this.setcolor(this.toHex(color))
+                console.log(color)
+                if (color == 'white' || color =='#ffffff') color = 'rgb(255, 255, 255)'
+                if (color[0]=='r'||color[0]=='R') color = this.toHex(color)
+                // this.setcolor(this.toHex(color))
+                this.setcolor(color)
             }
         },
     
