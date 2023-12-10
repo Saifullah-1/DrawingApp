@@ -11,11 +11,16 @@ public class PaintApp {
     public PaintApp(){
         serv = Database.getInstance();
     }
+
     public int create(JSONObject newShape) {
+        if (this.serv.isEmpty())
+            this.serv.createContainer();
         return this.serv.create(newShape);
     }
 
     public String update(int id, String newData) {
+        if (this.serv.isEmpty())
+            this.serv.createContainer();
         return serv.update(id, newData);
     }
 
@@ -34,8 +39,8 @@ public class PaintApp {
     public void save(String fileType) {
         if (fileType.equalsIgnoreCase("json"))
             this.serv.saveJSON();
-        this.serv.saveXML();
-
+        else
+            this.serv.saveXML();
     }
 
     public String load(String fileType) throws IOException {

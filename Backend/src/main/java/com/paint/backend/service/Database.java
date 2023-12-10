@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.paint.backend.ShapeFactory;
-import com.paint.backend.shapes.Container;
 import com.paint.backend.shapes.IShape;
+import com.paint.backend.shapes.Shape;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
@@ -20,11 +20,12 @@ import java.util.Stack;
 
 //move update to shape class
 public class Database {
-    private int lastID = 0;
+    private int lastID = -1; //the first ID will be equal 0 because of the container
     private static Database instance;
     private List<IShape> shapesList = new ArrayList<>();
     private final Stack<List<IShape>> undoStack = new Stack<>();
     private final Stack<List<IShape>> redoStack = new Stack<>();
+
     private Database() {}
 
     public static Database getInstance() {
@@ -35,9 +36,8 @@ public class Database {
     }
 
     public ArrayList<IShape> getShapes() {return new ArrayList<>(this.shapesList); }
+
     public int create(JSONObject newShape) {
-        if (lastID == 0)
-            clear();
         newShape.put("id", ++lastID);
         newShape.put("state", "new");
         IShape shape = ShapeFactory.create(newShape);
@@ -89,8 +89,8 @@ public class Database {
             redoStack.push(new ArrayList<>(shapesList));
             undoStack.pop();
             System.out.println("peek : " + redoStack.peek());
-            if (!undoStack.isEmpty()) shapesList = new ArrayList<>(undoStack.peek());
-            else shapesList.clear();
+//            if (!undoStack.isEmpty()) shapesList = new ArrayList<>(undoStack.peek());
+//            else shapesList.clear();
             test();
             return gson.toJson(shapesList);
         }
@@ -121,7 +121,7 @@ public class Database {
     }
 
     /*                                   SAVE & LOAD                                   */
-    public void saveJSON() {
+    public void saveJSON() { // handle if the file is empty  <<<<<<<<<<<<<<<< !!!!!!!!!!!!!!!!!!x`
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
         Gson gson = gsonBuilder.create();
@@ -213,17 +213,19 @@ public class Database {
         this.shapesList.clear();
         this.undoStack.clear();
         this.redoStack.clear();
-        this.lastID = 0;
-
-        JSONObject obj = new JSONObject();
-        obj.put("id", 0);
-        obj.put("shapeName", "container");
-        obj.put("fill", "white");
-        IShape container = ShapeFactory.create(obj);
-        this.shapesList.add(container);
-        saveState();
+        this.lastID = -1;
+        createContainer();
     }
 
+    public void createContainer() {
+        JSONObject container = new JSONObject();
+        container.put("id", ++this.lastID);
+        container.put("shapeName", "container");
+        container.put("fill", "white");
+        IShape containerShape = ShapeFactory.create(container);
+        this.shapesList.add(containerShape);
+        saveState();
+    }
     /*                                             UPLOADING DATA                                             */
     void startJSON(String jsonStr) {
 //        System.out.println(jsonStr);
@@ -248,6 +250,9 @@ public class Database {
         undoStack.push(shapesList);
     }
 
+    public boolean isEmpty() {
+        return this.shapesList.isEmpty();
+    }
     /*                                             TEST                                             */
     public void test() {
         GsonBuilder gsonBuilder = new GsonBuilder();

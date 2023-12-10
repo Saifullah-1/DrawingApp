@@ -7,6 +7,7 @@ public class Line extends Shape {
     private float[] points;
     private String lineCap;
     private String lineJoin;
+    private float tension;
 
     public Line() {}
 
@@ -20,6 +21,7 @@ public class Line extends Shape {
         json.put("stroke", stroke);
         json.put("strokeWidth", strokeWidth);
         json.put("draggable", draggable);
+        json.put("tension", this.tension);
         return json.put("shapeName", shapeName);
     }
 

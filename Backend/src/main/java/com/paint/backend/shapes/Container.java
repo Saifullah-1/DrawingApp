@@ -12,7 +12,7 @@ public class Container extends Shape {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", 0);
         jsonObject.put("shapeName", "container");
-        jsonObject.put("fill", this.fill);
+        jsonObject.put("fill", fill);
         return jsonObject;
     }
 
