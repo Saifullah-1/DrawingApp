@@ -238,7 +238,7 @@ public class Database {
             temp = this.lastID;
             this.lastID = Math.max(shape.getID(), temp);
         }
-        undoStack.push(shapesList);
+        saveState();
     }
 
     void startXML(JSONArray jsonArray) {
@@ -247,7 +247,7 @@ public class Database {
             IShape shape = ShapeFactory.create(new JSONObject(jsonObject.toString()));
             this.shapesList.add(shape);
         }
-        undoStack.push(shapesList);
+        saveState();
     }
 
     public boolean isEmpty() {

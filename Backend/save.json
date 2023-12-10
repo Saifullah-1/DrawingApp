@@ -1,11 +1,60 @@
 [
   {
+    "radius": 5.5,
+    "state": "new",
+    "id": 1,
+    "shapeName": "circle",
+    "stroke": "black",
+    "fill": "white",
+    "x": 15.0,
+    "y": 10.0,
+    "strokeWidth": 1.0,
+    "draggable": true
+  },
+  {
+    "radius": 5.5,
+    "state": "new",
+    "id": 2,
+    "shapeName": "circle",
+    "stroke": "black",
+    "fill": "white",
+    "x": 15.0,
+    "y": 10.0,
+    "strokeWidth": 1.0,
+    "draggable": true
+  },
+  {
+    "radius": 5.5,
+    "state": "new",
+    "id": 3,
+    "shapeName": "circle",
+    "stroke": "black",
+    "fill": "white",
+    "x": 15.0,
+    "y": 10.0,
+    "strokeWidth": 1.0,
+    "draggable": true
+  },
+  {
+    "state": "updated",
     "id": 0,
     "shapeName": "container",
-    "fill": "white",
+    "fill": "rgb(0, 0, 0)",
     "x": 0.0,
     "y": 0.0,
     "strokeWidth": 0.0,
     "draggable": false
+  },
+  {
+    "radius": 5.5,
+    "state": "new",
+    "id": 4,
+    "shapeName": "circle",
+    "stroke": "black",
+    "fill": "white",
+    "x": 15.0,
+    "y": 10.0,
+    "strokeWidth": 1.0,
+    "draggable": true
   }
 ]
