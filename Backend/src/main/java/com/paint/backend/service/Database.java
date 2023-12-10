@@ -221,7 +221,7 @@ public class Database {
         JSONObject container = new JSONObject();
         container.put("id", ++this.lastID);
         container.put("shapeName", "container");
-        container.put("fill", "white");
+        container.put("fill", "#FFFFFF");
         IShape containerShape = ShapeFactory.create(container);
         this.shapesList.add(containerShape);
         saveState();
