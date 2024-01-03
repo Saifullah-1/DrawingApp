@@ -11,6 +11,8 @@ public abstract class Shape implements IShape {
     protected float y;
     protected float strokeWidth;
     protected boolean draggable;
+    protected float scaleX;
+    protected float scaleY;
 
     @Override
     public int getID() {

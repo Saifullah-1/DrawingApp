@@ -18,6 +18,8 @@ public class Ellipse extends Shape {
         json.put("radiusX", this.radiusX);
         json.put("radiusY", this.radiusY);
         json.put("stroke", stroke);
+        json.put("scaleX", scaleX);
+        json.put("scaleY", scaleY);
         json.put("fill", fill);
         json.put("strokeWidth", strokeWidth);
         json.put("draggable", draggable);
@@ -33,3 +35,4 @@ public class Ellipse extends Shape {
         return ShapeFactory.create(updated);
     }
 }
+

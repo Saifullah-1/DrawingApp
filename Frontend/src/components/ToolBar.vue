@@ -105,6 +105,7 @@
     
         async SaveFile(type){
            // this.type = typ
+            this.emitter.emit("tool-clicked",{msg: 'save'})
             this.data = await axios.get("http://localhost:8080/paint/save?fileType="+type);
         },
 
@@ -115,43 +116,9 @@
         },
 
         async OpenFile(type){
-        //     await window.showOpenFilePicker({types:[
-        //         {
-        //             description : 'Paint',
-        //             accept :{
-        //                 'Paint/*' : ['.xml', '.json'] 
-        //             }
-        //         },
-        //     ],
-        //     excludeAcceptAllOption:true,
-        //     multiple:false
-        // })
-        //     this.File = await FileSystemHandle.getFile()
-        //     // this.File = await FileHandle .getFile()
-            // const response = fetch("http://localhost:3000/shapes")
-            // // this.data = await axios.get("http://localhost:8080/paint/load?fileType=json");
-            // this.data = await response.json();
-            // console.log(JSON.stringify(this.data))
-            // // this.loaded = []
-            // // this.loaded=this.data.parse()
-            // // this.emitter.emit("load",{msg: this.loaded})
-
-            // const response = await fetch("http://localhost:3000/shapes");
-            // this.data = JSON.stringify(response);
             const response = await axios.get("http://localhost:8080/paint/load?fileType="+type)
             let obj = response.data
-                // for (var i=0;i<data.length;i++){
-                    // console.log (data[i])
             this.emitter.emit("load",{msg: obj})
-                // }
-            
-
-            // console.log ("Length Before Send = " ,this.loaded.length )
-            // for (var i=0;i<this.loaded.length;i++){
-            //     console.log(this.loaded[i].id)
-            //     this.emitter.emit("load",{msg: this.loaded[i]})
-            // }
-            // this.emitter.emit("load",{msg: this.loaded})
         },
 
         unclick(){
@@ -340,7 +307,6 @@
             else if (item=='picker') bool=this.clickedPicker
             else if (item=='select') bool=this.clickedSelect
             else if (item=='resize') bool=this.clickedResize
-            else if (item=='new') fetch("http://localhost:8080/paint/new")
             if (shape !='NO'){
                 if (shape=='circle'&&this.$refs.circle.className != 'hovered') hover=false  
                 else if (shape=='rectangle'&&this.$refs.rectangle.className != 'hovered') hover=false  

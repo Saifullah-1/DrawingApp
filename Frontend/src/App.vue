@@ -1,23 +1,21 @@
-
 <template>
+  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
+  <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   <ToolBar/>
   <Canvas/>
 </template>
 
 <script>
 import Canvas from './components/Canvas.vue';
+import HelloWorld from './components/HelloWorld.vue'
 import ToolBar from './components/ToolBar.vue';
-
-
-window.addEventListener('load', (event) => {
-    fetch("http://localhost:8080/paint/new");
-});
 
 export default {
   name: 'App',
   components: {
+    HelloWorld,
     ToolBar,
-    Canvas,
+    Canvas
 }
 }
 </script>
@@ -30,5 +28,6 @@ export default {
   text-align: center;
   align-items: center;
   color: #2c3e50;
+ 
 }
 </style>

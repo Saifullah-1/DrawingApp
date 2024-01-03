@@ -3,7 +3,7 @@ package com.paint.backend.shapes;
 import com.paint.backend.ShapeFactory;
 import org.json.JSONObject;
 public class Triangle extends Shape{
-    private static int sides = 3;
+    private int sides = 3;
     private float radius;
 
     public Triangle() {}
@@ -19,6 +19,8 @@ public class Triangle extends Shape{
         json.put("strokeWidth", strokeWidth);
         json.put("draggable", draggable);
         json.put("radius", this.radius);
+        json.put("scaleX", scaleX);
+        json.put("scaleY", scaleY);
         json.put("sides", sides);
         return json.put("shapeName", shapeName);
     }

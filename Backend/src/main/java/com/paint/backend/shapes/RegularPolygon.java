@@ -18,6 +18,8 @@ public class RegularPolygon extends Shape {
         json.put("radius", this.radius);
         json.put("sides", this.sides);
         json.put("stroke", stroke);
+        json.put("scaleX", scaleX);
+        json.put("scaleY", scaleY);
         json.put("fill", fill);
         json.put("strokeWidth", strokeWidth);
         json.put("draggable", draggable);

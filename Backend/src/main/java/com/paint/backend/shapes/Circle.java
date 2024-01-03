@@ -17,6 +17,8 @@ public class Circle extends Shape {
         json.put("radius", this.radius);
         json.put("stroke", stroke);
         json.put("fill", fill);
+        json.put("scaleX", scaleX);
+        json.put("scaleY", scaleY);
         json.put("strokeWidth", strokeWidth);
         json.put("draggable", draggable);
         return json.put("shapeName", shapeName);
@@ -31,3 +33,4 @@ public class Circle extends Shape {
         return ShapeFactory.create(updated);
     }
 }
+

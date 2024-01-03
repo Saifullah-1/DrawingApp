@@ -21,6 +21,8 @@ public class Rect extends Shape {
         json.put("fill", fill);
         json.put("strokeWidth", strokeWidth);
         json.put("draggable", draggable);
+        json.put("scaleX", scaleX);
+        json.put("scaleY", scaleY);
         return json.put("shapeName", shapeName);
     }
 

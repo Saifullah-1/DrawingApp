@@ -37,8 +37,6 @@ public class PaintApp {
     }
 
     public void save(String fileType) {
-        if (this.serv.isEmpty())
-            this.serv.createContainer();
         if (fileType.equalsIgnoreCase("json"))
             this.serv.saveJSON();
         else

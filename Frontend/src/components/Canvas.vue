@@ -22,16 +22,18 @@ import axios from 'axios'
                 lastFill : 'black',
                 isPosted: [true],
                 url : 'http://localhost:8080/',
-                lastShape:null
+                lastShape:null,
+                isposted: true,
+                modified: null
             }
         },
         methods:{
             async startDrawing(e){
                 if (e.target!=this.stage) e.target.draggable(false)
                 if(this.tr.nodes().length > 0) return false
-                if((this.index != 1 )&& !this.isPosted[this.lastShape.id()]){
-                    const responsej = await axios.post( this.url +'paint/create',this.createPost(this.shapes[this.lastShape.id()]))
-                    this.isPosted[this.shapes.length - 1] = true
+                if((this.index != 1 )&& !this.isPosted){
+                    const responsej = await axios.post( this.url +'paint/create',this.createPost(this.lastShape))
+                    this.isPosted = true
                 }
                 
                 this.isDrawing = true;
@@ -90,9 +92,8 @@ import axios from 'axios'
                 this.item.strokeWidth(this.size)
                 this.item.id(this.index++)
                 this.shapes.push(this.item)
-                this.isPosted[this.item.id()] = false
                 this.layer.add(this.item).batchDraw();
-                this.lastShape = this.item
+                
             },
 
             async endDrawing(){
@@ -145,6 +146,8 @@ import axios from 'axios'
                     }
                     this.lastStroke = this.color
                     this.layer.batchDraw();
+                    this.lastShape = this.item
+                    this.isPosted = false
                 }
             },
 
@@ -158,7 +161,7 @@ import axios from 'axios'
                     }
                     return shapeData
                 }
-                else if(shape.hasName('rectangle') || shape.hasName('square')){
+                else if(shape.hasName('rectangle')){
                     shapeData = {
                         id: shape.id(),
                         shapeName : 'rectangle',
@@ -170,9 +173,26 @@ import axios from 'axios'
                         draggable: shape.draggable(),
                         width : shape.width(),
                         height : shape.height(),
+                        scaleX: shape.scaleX(),
+                        scaleY: shape.scaleY()
                     }
                 }
-
+                else if(shape.hasName('square')){
+                    shapeData = {
+                        id: shape.id(),
+                        shapeName : 'square',
+                        x : shape.x(),
+                        y : shape.y(),
+                        fill: shape.fill(),
+                        stroke: shape.stroke(),
+                        strokeWidth: shape.strokeWidth(),
+                        draggable: shape.draggable(),
+                        width : shape.width(),
+                        height : shape.height(),
+                        scaleX: shape.scaleX(),
+                        scaleY: shape.scaleY()
+                    }
+                }
                 else if(shape.hasName('ellipse')){
                     shapeData = {
                         id: shape.id(),
@@ -184,7 +204,9 @@ import axios from 'axios'
                         strokeWidth: shape.strokeWidth(),
                         draggable: shape.draggable(),
                         radiusX : shape.radiusX(),
-                        radiusY : shape.radiusY(),  
+                        radiusY : shape.radiusY(), 
+                        scaleX: shape.scaleX(),
+                        scaleY: shape.scaleY() 
                     }
                 }
                 else if(shape.hasName('circle')){
@@ -197,7 +219,9 @@ import axios from 'axios'
                         stroke: shape.stroke(),
                         strokeWidth: shape.strokeWidth(),
                         draggable: shape.draggable(),
-                        radius : shape.radius(),  
+                        radius : shape.radius(), 
+                        scaleX: shape.scaleX(),
+                        scaleY: shape.scaleY() 
                     }
                 }
                 else if(shape.hasName('triangle')){
@@ -210,8 +234,10 @@ import axios from 'axios'
                         stroke: shape.stroke(),
                         strokeWidth: shape.strokeWidth(),
                         draggable: shape.draggable(),
-                        sides : 3,
-                        radius : 0,  
+                        sides : shape.sides(),
+                        radius : shape.radius(),  
+                        scaleX: shape.scaleX(),
+                        scaleY: shape.scaleY()
                     }
                 }
                 else if(shape.hasName('line')){
@@ -224,6 +250,8 @@ import axios from 'axios'
                         points : shape.points(),
                         lineCap: 'round',
                         lineJoin: 'round',
+                        scaleX: shape.scaleX(),
+                        scaleY: shape.scaleY()
                         
                     }
                 }
@@ -237,6 +265,8 @@ import axios from 'axios'
                         points : shape.points(),
                         lineCap: 'round',
                         lineJoin: 'round',
+                        scaleX: shape.scaleX(),
+                        scaleY: shape.scaleY()
                         
                     }
                 }
@@ -244,9 +274,10 @@ import axios from 'axios'
             },
 
             async fill(e){
-                if(!this.isPosted[this.lastShape.id()]){
-                    const response = await axios.post( this.url +'paint/create',this.createPost(this.shapes[this.lastShape.id()]))
-                    this.isPosted[this.lastShape.id()] = true
+                if(!this.isPosted){
+                    const response = await axios.post( this.url +'paint/create',this.createPost(this.lastShape))
+                    this.isPosted = true
+                    console.log("hii")
                 }
                 if (e.target==this.stage){
                     this.stage.container().style.backgroundColor = this.color
@@ -272,10 +303,10 @@ import axios from 'axios'
 
             async erase(e){
                 if(e.target != this.stage){
-                    if(!this.isPosted[this.lastShape.id()]){
-                    const response = await axios.post( this.url +'paint/create',this.createPost(this.shapes[this.lastShape.id()]))
-                    this.isPosted[this.lastShape.id()] = true
-                     }
+                    if(!this.isPosted){
+                        const response = await axios.post( this.url +'paint/create',this.createPost(this.lastShape))
+                        this.isPosted= true
+                    }
                     const response = await axios.post(this.url +'paint/delete?id='+ e.target.id() ,this.createPost(e.target))
                     this.shapes[e.target.id] = null
                     e.target.remove()
@@ -289,9 +320,11 @@ import axios from 'axios'
                         copy = new Konva.Rect({
                             x : e.target.x() - 75,
                             y : e.target.y() - 75,
-                            width : e.target.width(),
+                            width : e.target.width(), 
                             height : e.target.height(),
                             name : 'rectangle',
+                            scaleX: e.target.scaleX(),
+                            scaleY: e.target.scaleY()
                         });
                     }
                     else if(e.target.hasName('square')){
@@ -301,6 +334,8 @@ import axios from 'axios'
                             width : e.target.width(),
                             height : e.target.height(),
                             name : 'square',
+                            scaleX: e.target.scaleX(),
+                            scaleY: e.target.scaleY()
                         });
                     }
                     else if(e.target.hasName('ellipse')){
@@ -310,6 +345,8 @@ import axios from 'axios'
                             x : e.target.x()- 75,
                             y : e.target.y()- 75,
                             name : 'ellipse',   
+                            scaleX: e.target.scaleX(),
+                            scaleY: e.target.scaleY()
                         });
                     }
                     else if(e.target.hasName('circle')){
@@ -318,15 +355,19 @@ import axios from 'axios'
                             x : e.target.x()- 75,
                             y : e.target.y()- 75,
                             name : 'circle',   
+                            scaleX: e.target.scaleX(),
+                            scaleY: e.target.scaleY()
                         });
                     }
                     else if(e.target.hasName('triangle')){
                         copy = new Konva.RegularPolygon({
-                            sides : e.target.sides(), //3
-                            radius : e.target.radius(), //0
+                            sides : e.target.sides(), 
+                            radius : e.target.radius(), 
                             x : e.target.x()- 75,
                             y : e.target.y()- 75,
-                            name : 'triangle',   
+                            name : 'triangle',  
+                            scaleX: e.target.scaleX(),
+                            scaleY: e.target.scaleY()
                         });
                     }
                     else if(e.target.hasName('line')){
@@ -338,6 +379,9 @@ import axios from 'axios'
                         stroke : e.target.stroke(),
                         strokeWidth : e.target.strokeWidth(),
                         name : 'line',
+                        scaleX: e.target.scaleX(),
+                            scaleY: e.target.scaleY()
+                        
                     });
                     }
                     else if(e.target.hasName('pencil')){
@@ -349,6 +393,9 @@ import axios from 'axios'
                             stroke : e.target.stroke(),
                             strokeWidth : e.target.strokeWidth(),
                             name : 'pencil',
+                            scaleX: e.target.scaleX(),
+                            scaleY: e.target.scaleY()
+                        
                         });
                     }
 
@@ -360,9 +407,9 @@ import axios from 'axios'
                     this.layer.add(copy)
                     this.layer.batchDraw()
 
-                    if(!this.isPosted[this.lastShape.id()]){
-                        const response = await axios.post( this.url +'paint/create',this.createPost(this.shapes[this.lastShape.id()]))
-                        this.isPosted[this.lastShape.id()] = true
+                    if(!this.isPosted){
+                        const response = await axios.post( this.url +'paint/create',this.createPost(this.lastShape))
+                        this.isPosted= true
                     }
                     const response = await axios.post( this.url +'paint/create' ,this.createPost(e.target))
                 }
@@ -374,10 +421,16 @@ import axios from 'axios'
                     this.stage.container().style.backgroundColor = obj.fill
                 }
                 else{
-                    if(name=='rectangle'||name=='square'){
+                    if(name=='rectangle'){
                         this.item = new Konva.Rect({
                             width : obj.width,
                             height : obj.height,
+                        });
+                    }
+                    else if(name=='square'){
+                        this.item = new Konva.Rect({
+                            width : obj.width,
+                            height: obj.height
                         });
                     }
                     else if(name=='circle'){
@@ -394,15 +447,18 @@ import axios from 'axios'
                     else if(name=='triangle'){
                         this.item = new Konva.RegularPolygon({
                             radius : obj.radius,
-                            sides : obj.sides,
+                            sides : 3
                         });
                     }
-                    else{
+                    else if(name == 'line' || name == 'pencil'){
+                        console.log("hih")
                         this.item = new Konva.Line({
                             points : obj.points,
                             lineCap: 'round',
                             lineJoin: 'round',
                         });
+
+                    
                     }
                     this.item.id(obj.id)
                     this.item.name(name)
@@ -411,19 +467,23 @@ import axios from 'axios'
                     this.item.stroke(obj.stroke)
                     this.item.strokeWidth(obj.strokeWidth)
                     this.item.fill(obj.fill)
+                    this.item.scaleX(obj.scaleX)
+                    this.item.scaleY(obj.scaleY)
                     this.item.draggable(false)
                     if (obj.id>this.index) this.index=obj.id
                     this.shapes.push(this.item)
-                    this.layer.add(this.item).batchDraw()
-                    this.isPosted[this.item] = true
+                    this.layer.add(this.item)
+                    this.layer.batchDraw()
+                    
                 }
             },
          
             async moveResize(e){
-                if(e.target.hasName('rectangle')||e.target.hasName('square')||e.target.hasName('ellipse')||e.target.hasName('circle')||e.target.hasName('line')||e.target.hasName('triangle')){  //if clicked on shape
-                        if(!this.isPosted[this.lastShape.id()]){
-                            const response = await axios.post( this.url +'paint/create',this.createPost(this.shapes[this.lastShape.id()]))
-                            this.isPosted[this.lastShape.id()] = true
+                if(e.target.hasName('rectangle')||e.target.hasName('square')||e.target.hasName('ellipse')||e.target.hasName('line')||e.target.hasName('circle')||e.target.hasName('triangle')){  //if clicked on shape
+                        if(!this.isPosted){
+                            const response = await axios.post( this.url +'paint/create',this.createPost(this.lastShape))
+                           // console.log("hii")
+                            this.isPosted = true
                         }
                         if(this.tr.nodes().length>0){
                             this.tr.nodes()[0].draggable(false) //remove draggable proprety from the previously selected shape
@@ -434,20 +494,21 @@ import axios from 'axios'
                             if (e.target!=this.stage) e.target.draggable(true)
                         }
                         else if (this.tool=='resize'){
+                            console.log(e.target.scaleX())
                             this.tr.nodes([e.target]) // add it to the transformer
                             this.layer.batchDraw()
                         }
-
-                        console.log(e.target.id())
-                        const response = await axios.post( this.url +'paint/update?id='+ e.target.id() ,this.createPost(e.target))
+                        this.modified = e.target
+   
                     }
             },
             
             async undo(){
                 
-                if(!this.isPosted[this.lastShape.id()]){
-                    const response = await axios.post( this.url +'paint/create',this.createPost(this.shapes[this.lastShape.id()]))
-                    this.isPosted[this.shapes.length - 1] = true
+                if(!this.isPosted){
+                    const response = await axios.post( this.url +'paint/create',this.createPost(this.lastShape))
+                    this.isPosted = true
+                    console.log("hiii")
                 }
                 this.shapes=[this.stage]
                 this.isposted=[true]
@@ -466,15 +527,27 @@ import axios from 'axios'
                 for (var i=0 ;i< obj.length;i++){
                     this.Loading(obj[i]) 
                 }   
+            },
+            async sendNewAttributes(shape){
+                const response = await axios.post( this.url +'paint/update?id='+ shape.id() ,this.createPost(shape))
+            },
+            async createLastShape(){
+                if(!this.isPosted){
+                    const response = await axios.post( this.url +'paint/create',this.createPost(this.lastShape))
+                    this.isPosted = true
+                }
             }
-    
         },
 
         mounted() {
+            window.addEventListener('load',(event)=>{
+                fetch("http://localhost:8080/paint/new");
+            })
             this.emitter.on("tool-clicked",(data) =>{
                 this.tool = data.msg
                 this.tr.nodes([])
                 if (this.tool=='new'){
+                    this.createLastShape()
                     this.stage.destroyChildren()
                     this.stage.container().style.backgroundColor='white'
                     this.layer = new Konva.Layer();
@@ -483,6 +556,7 @@ import axios from 'axios'
                     this.layer.add(this.tr);
                     this.index=1
                     this.shapes=[this.stage]
+                    fetch("http://localhost:8080/paint/new");
                 }
                 if(this.tool== 'undo'){
                     this.stage.destroyChildren()
@@ -490,7 +564,6 @@ import axios from 'axios'
                     this.stage.add(this.layer);
                     this.tr = new Konva.Transformer()
                     this.layer.add(this.tr);
-                    //this.index=1
                     this.undo()
                 }
                 if(this.tool== 'redo'){
@@ -499,8 +572,10 @@ import axios from 'axios'
                     this.stage.add(this.layer);
                     this.tr = new Konva.Transformer()
                     this.layer.add(this.tr);
-                    //this.index=1
                     this.redo()
+                }
+                else if(this.tool== 'save'){
+                    this.createLastShape();
                 }
 
             })
@@ -545,30 +620,31 @@ import axios from 'axios'
             this.layer.add(this.tr);
         
             this.stage.on("click",(e)=>{
-    
-                if (this.tool=='select'||this.tool=='resize'){
-                    this.moveResize(e)
-                    
-                }
-                else{
-                    this.tr.nodes([])
-                    if (e.target!=this.stage) e.target.draggable(false)
-                }
-                
+                      
                 if(this.tool == 'copy'){
                     this.copy(e,this.index)
                     return;
                 }
                 this.shapes[e.target.id] = e.target
             });
-
+            this.stage.on('mouseup',()=>{
+                if(this.tool === 'select' || this.tool === 'resize'){
+                    console.log(this.modified)
+                    if(this.modified != null)
+                        this.sendNewAttributes(this.modified)
+                }
+            })
             
             this.stage.on('mousedown', (e) => {
 
                 if (e.target == this.stage) { // if touch the screen remove transformer
-                    this.tr.nodes([]);
-                    this.layer.batchDraw();
+                   this.tr.nodes([]);
+                   this.layer.batchDraw();
                 }
+                if(this.tool === 'select' || this.tool === 'resize'){
+                    this.moveResize(e)
+                    return;
+                } 
                 if (this.tool=='fill'){
                     this.fill(e)
                     return;
@@ -581,13 +657,19 @@ import axios from 'axios'
                     this.erase(e)
                     return;
                 }
-            
+                if (this.tool=='select'||this.tool=='resize'){
+                    this.moveResize(e)
+                    
+                }
+                else{
+                    this.tr.nodes([])
+                    if (e.target!=this.stage) e.target.draggable(false)
+                }
                 if (this.tool=='shape'||this.tool=='pencil'){
                     this.startDrawing(e);
                     this.stage.on('mouseup', this.endDrawing);
                     this.stage.on('mousemove', this.continueDrawing);
                 }
-                
                 this.shapes[e.target.id] = e.target
             });
             
